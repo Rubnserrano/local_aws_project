@@ -2,7 +2,15 @@
 FROM python:3.12-slim
 
 # Instalar dependencias básicas
-RUN apt update && apt install -y curl wget git build-essential
+RUN apt-get update && apt-get install -y \
+    curl wget git build-essential unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar Terraform (descargar binario de HashiCorp)
+RUN curl -fsSL https://releases.hashicorp.com/terraform/1.7.4/terraform_1.7.4_linux_amd64.zip -o /tmp/terraform.zip && \
+    unzip /tmp/terraform.zip -d /usr/local/bin/ && \
+    rm /tmp/terraform.zip && \
+    chmod +x /usr/local/bin/terraform
 
 # Crear carpeta de trabajo
 WORKDIR /app/localstack_etl

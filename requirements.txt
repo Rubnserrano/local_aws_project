@@ -1,0 +1,27 @@
+# Core AWS
+boto3==1.34.50          # Cliente AWS (S3, DynamoDB, Glue, etc.)
+botocore==1.34.50       # Dependencia de boto3
+
+# HTTP & APIs
+requests==2.32.5        # Obtener datos de APIs públicas
+urllib3==2.6.3          # HTTP para requests
+
+# Data Processing
+pandas==2.2.0           # Manipulación de datos (DataFrames)
+numpy==1.24.3           # Cálculos numéricos
+
+# Testing
+pytest==7.4.4           # Framework de testing
+pytest-cov==4.1.0       # Coverage reports
+moto==5.0.0             # Mock de servicios AWS para tests
+
+# Code Quality
+black==24.1.1           # Formateador de código
+flake8==7.0.0           # Linter
+pylint==3.0.3           # Linter avanzado
+mypy==1.8.0             # Type checking
+
+# Utilities
+python-dotenv==1.0.0    # Variables de entorno (.env)
+pydantic==2.6.0         # Validación de datos
+tqdm==4.67.1            # Barras de progreso

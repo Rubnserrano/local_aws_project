@@ -14,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 class BronzeExtractor:
     def __init__(self):
-        # Configuración de LocalStack
-        logger.info("Inicializando cliente S3...")
+        logger.info("Initializing S3 Client...")
         self.s3 = boto3.client(
             "s3",
             endpoint_url="http://localstack:4566",  # LocalStack endpoint
@@ -29,38 +28,36 @@ class BronzeExtractor:
     def _ensure_bucket(self):
         try:
             self.s3.head_bucket(Bucket=self.bucket_name)
-            logger.info(f"Bucket '{self.bucket_name}' ya existe")
+            logger.info(f"Bucket '{self.bucket_name}' already exists")
         except:
-            logger.info(f"Creando bucket '{self.bucket_name}'...")
+            logger.info(f"Creating bucket '{self.bucket_name}'...")
             self.s3.create_bucket(
                 Bucket=self.bucket_name,
                 CreateBucketConfiguration={"LocationConstraint": "eu-west-1"}
             )
-            logger.info("✅ Bucket creado exitosamente")
+            logger.info("Bucket created successfully")
 
     def extract(self):
-        # API pública que funciona bien (REST Countries)
         url = "https://restcountries.com/v3.1/all?fields=name,capital,currencies"
-        logger.info(f"Obteniendo datos de {url}...")
+        logger.info(f"Extracting data from {url}...")
 
         try:
             response = requests.get(url, timeout=10)
-            response.raise_for_status()  # Lanzar excepción si hay error HTTP
+            response.raise_for_status()  # Return HTTPError for bad responses
             data = response.json()
-            logger.info(f"✅ Se obtuvieron {len(data)} registros de la API")
+            logger.info(f"Successfully extracted {len(data)} records from API")
         except requests.exceptions.RequestException as e:
-            logger.error(f"Error al obtener datos de la API: {e}")
+            logger.error(f"Error extracting data from API: {e}")
             raise
 
         return data
 
     def save(self, data):
-        # Convertir a line-delimited JSON
         json_data = "\n".join([json.dumps(record) for record in data])
 
         # Nombre de archivo con timestamp
         filename = f"bronze_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        logger.info(f"Guardando datos en s3://{self.bucket_name}/{filename}...")
+        logger.info(f"Saving data to s3://{self.bucket_name}/{filename}...")
 
         try:
             self.s3.put_object(
@@ -68,11 +65,10 @@ class BronzeExtractor:
                 Key=filename,
                 Body=json_data.encode("utf-8")
             )
-            logger.info(f"✅ Datos guardados exitosamente en S3")
-            logger.info(f"📊 Tamaño: {len(json_data)} bytes")
+            logger.info(f"Data saved successfully to s3://{self.bucket_name}/{filename}")
             return filename
         except Exception as e:
-            logger.error(f"Error al guardar en S3: {e}")
+            logger.error(f"Error saving data to S3: {e}")
             raise
 
     def run(self):
@@ -85,7 +81,7 @@ class BronzeExtractor:
         filename = self.save(data)
         
         logger.info("=" * 50)
-        logger.info(f"✅ Proceso completado: {filename}")
+        logger.info(f"Process completed: {filename}")
         logger.info("=" * 50)
 
 
