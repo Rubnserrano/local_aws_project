@@ -1,53 +1,98 @@
-# Terraform - Infrastructure as Code para LocalStack
+# Terraform Configuration for LocalStack ETL
 
-Gestión de recursos AWS (simulados con LocalStack) usando Terraform.
-
-## 📁 Estructura
+## Estructura de carpetas
 
 ```
 terraform/
-├── provider.tf          # Configuración del proveedor AWS (apunta a LocalStack)
-├── variables.tf         # Variables configurables
-├── s3.tf               # Recursos de S3 (buckets bronze, silver, gold)
-├── outputs.tf          # Salidas de Terraform
-├── terraform.tfvars    # Valores de variables para dev
-└── README.md           # Este archivo
+├── modules/              # Módulos reutilizables
+│   ├── s3/              # Módulo para buckets S3
+│   ├── glue/            # Módulo para AWS Glue
+│   ├── lambda/          # Módulo para AWS Lambda
+│   └── iam/             # Módulo para IAM
+├── main.tf              # Configuración principal
+├── provider.tf          # Proveedores AWS
+├── variables.tf         # Variables
+├── outputs.tf           # Outputs
+├── locals.tf            # Configuración local
+├── terraform.tfvars     # Variables dev (default)
+├── terraform.tfvars.staging  # Variables staging
+└── terraform.tfvars.prod     # Variables prod
 ```
 
-## 🚀 Cómo usar
+## Cómo usar
 
-### 1. Inicializar Terraform
-
+### Desarrollo local (dev)
 ```bash
-cd terraform/
+cd terraform
 terraform init
-```
-
-Esto descarga el proveedor AWS y prepara el ambiente.
-
-### 2. Ver cambios que se aplicarán
-
-```bash
 terraform plan
+terraform apply -auto-approve
 ```
 
-Muestra qué recursos se crearán/modificarán/eliminarán.
+### Staging
+```bash
+cd terraform
+terraform init
+terraform plan -var-file=terraform.tfvars.staging
+terraform apply -var-file=terraform.tfvars.staging -auto-approve
+```
 
-### 3. Aplicar la configuración
+### Producción (prod)
+```bash
+cd terraform
+terraform init
+terraform plan -var-file=terraform.tfvars.prod
+terraform apply -var-file=terraform.tfvars.prod -auto-approve
+```
+
+## Comprobar estado
 
 ```bash
-terraform apply
+terraform state list
+terraform state show aws_s3_bucket.bronze
+terraform output
 ```
 
-Crea los buckets S3 en LocalStack. Presiona `yes` para confirmar.
-
-### 4. Verificar recursos creados
+## Destruir recursos
 
 ```bash
-terraform show
+# Dev
+terraform destroy -auto-approve
+
+# Staging
+terraform destroy -var-file=terraform.tfvars.staging -auto-approve
+
+# Prod
+terraform destroy -var-file=terraform.tfvars.prod -auto-approve
 ```
 
-O desde el contenedor ETL:
+## Variables disponibles
+
+- `aws_region`: Región de AWS/LocalStack (default: eu-west-1)
+- `environment`: Nombre del ambiente (dev, staging, prod)
+- `localstack_endpoint`: URL del endpoint de LocalStack
+- `bronze_bucket_name`: Nombre del bucket de bronze
+- `silver_bucket_name`: Nombre del bucket de silver
+- `gold_bucket_name`: Nombre del bucket de gold
+- `tags`: Tags comunes para todos los recursos
+
+## Módulos
+
+### S3 Module
+Crea buckets S3 con versionamiento y encriptación.
+
+**Variables:**
+- `bucket_name`: Nombre del bucket
+- `provider_alias`: Alias del provider (default: aws.localstack)
+- `enable_versioning`: Habilitar versionamiento (default: true)
+- `encryption_algorithm`: Algoritmo de encriptación (default: AES256)
+- `tags`: Tags del bucket
+
+**Outputs:**
+- `bucket_id`: ID del bucket
+- `bucket_arn`: ARN del bucket
+- `bucket_name`: Nombre del bucket
+
 ```bash
 aws s3 ls --endpoint-url=http://localstack:4566
 ```

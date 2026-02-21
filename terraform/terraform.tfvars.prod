@@ -1,0 +1,16 @@
+# Variables para ambiente de producción
+
+aws_region         = "eu-west-1"
+environment         = "prod"
+localstack_endpoint = "http://localstack:4566"
+
+bronze_bucket_name = "bronze-bucket-prod"
+silver_bucket_name = "silver-bucket-prod"
+gold_bucket_name   = "gold-bucket-prod"
+
+tags = {
+  Project     = "localstack-etl"
+  Environment = "prod"
+  ManagedBy   = "terraform"
+  CreatedBy   = "your-name"
+}
