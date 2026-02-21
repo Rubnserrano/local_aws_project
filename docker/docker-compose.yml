@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,dynamodb,sqs,lambda
+      - DEBUG=1
+      - DATA_DIR=/var/lib/localstack
+      - LAMBDA_EXECUTOR=docker-reuse # permitir que lambda ejecute contenedores docker
+    volumes:
+      - "../data:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  etl:
+    container_name: localstack_etl
+    build: ./docker_etl   # Aquí estará tu Dockerfile con Python/venv
+    volumes:
+      - ../src:/usr/src/app/src
+      - ../config:/usr/src/app/config
+      - ../data:/usr/src/app/data
+    environment: # credenciales aws local test
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+    depends_on: # que se ejecute primer localstack antes de etl
+      - localstack

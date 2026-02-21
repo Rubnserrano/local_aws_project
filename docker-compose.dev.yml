@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  etl:
+    build:
+      context: .
+      dockerfile: docker/docker_etl/Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    working_dir: /usr/src/app
+    environment:
+      - PATH=/opt/venv/bin:/usr/local/bin:/bin
+    command: bash
