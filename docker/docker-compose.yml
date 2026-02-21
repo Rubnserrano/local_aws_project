@@ -17,14 +17,14 @@ services:
 
   etl:
     container_name: localstack_etl
-    build: ./docker_etl   # Aquí estará tu Dockerfile con Python/venv
+    build: 
+      context: ./docker_etl
+      dockerfile: Dockerfile
     volumes:
-      - ../src:/usr/src/app/src
-      - ../config:/usr/src/app/config
-      - ../data:/usr/src/app/data
+      - ../:/app/localstack_etl
     environment: # credenciales aws local test
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_REGION=eu-west-1
     depends_on: # que se ejecute primer localstack antes de etl
       - localstack

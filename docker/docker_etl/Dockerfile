@@ -5,7 +5,7 @@ FROM python:3.12-slim
 RUN apt update && apt install -y curl wget git build-essential
 
 # Crear carpeta de trabajo
-WORKDIR /usr/src/app
+WORKDIR /app/localstack_etl
 
 # Crear un virtual environment
 RUN python3 -m venv /opt/venv
@@ -18,10 +18,10 @@ RUN pip install --upgrade pip
 RUN pip install boto3 requests pandas awscli
 
 # Copiar el código del repo dentro de la imagen (útil para build/producción)
-COPY . /usr/src/app
+COPY . /app/localstack_etl
 
 # Si existe requirements.txt instalar dependencias del proyecto
-RUN /bin/sh -c 'if [ -f /usr/src/app/requirements.txt ]; then pip install -r /usr/src/app/requirements.txt; fi'
+RUN /bin/sh -c 'if [ -f /app/localstack_etl/requirements.txt ]; then pip install -r /app/localstack_etl/requirements.txt; fi'
 
-# Comando por defecto (útil en desarrollo)
-CMD ["bash"]
+# para que no se cierre el contenedor y podamos entrar a la terminal
+CMD ["tail", "-f", "/dev/null"]
