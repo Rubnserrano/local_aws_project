@@ -33,3 +33,6 @@ aws_s3_bucket.silver: Creating...
 │   on s3.tf line 28, in resource "aws_s3_bucket" "gold":
 │   28: resource "aws_s3_bucket" "gold" {
 │ 
+
+
+# Next steps, crear CICD en github actions para ejecutar los plan y apply y ver los logs en UI
