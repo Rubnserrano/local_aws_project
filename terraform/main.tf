@@ -34,7 +34,11 @@ module "s3_gold" {
 
 module "sqs_bronze" {
     source = "./modules/sqs"
-    # TBD
+    
+    queue_name = "bronze-ingestion-queue"
+    fifo_queue_bool = false
+    tags = var.tags
+    
     providers = {
       aws = aws.localstack
     }
