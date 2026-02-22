@@ -1,49 +1,49 @@
 output "bronze_bucket_name" {
   description = "Nombre del bucket Bronze"
-  value       = aws_s3_bucket.bronze.id
+  value       = module.s3_bronze.bucket_id
 }
 
 output "silver_bucket_name" {
   description = "Nombre del bucket Silver"
-  value       = aws_s3_bucket.silver.id
+  value       = module.s3_silver.bucket_id
 }
 
 output "gold_bucket_name" {
   description = "Nombre del bucket Gold"
-  value       = aws_s3_bucket.gold.id
+  value       = module.s3_gold.bucket_id
 }
 
 output "bronze_bucket_arn" {
   description = "ARN del bucket Bronze"
-  value       = aws_s3_bucket.bronze.arn
+  value       = module.s3_bronze.bucket_arn
 }
 
 output "silver_bucket_arn" {
   description = "ARN del bucket Silver"
-  value       = aws_s3_bucket.silver.arn
+  value       = module.s3_silver.bucket_arn
 }
 
 output "gold_bucket_arn" {
   description = "ARN del bucket Gold"
-  value       = aws_s3_bucket.gold.arn
+  value       = module.s3_gold.bucket_arn
 }
 
 output "s3_buckets" {
   description = "Resumen de todos los buckets creados"
   value = {
     bronze = {
-      name = aws_s3_bucket.bronze.id
-      arn  = aws_s3_bucket.bronze.arn
+      name = module.s3_bronze.bucket_id
+      arn  = module.s3_bronze.bucket_arn
       tier = "raw_data"
     }
     silver = {
-      name = aws_s3_bucket.silver.id
-      arn  = aws_s3_bucket.silver.arn
+      name = module.s3_silver.bucket_id
+      arn  = module.s3_silver.bucket_arn
       tier = "cleaned_data"
     }
     gold = {
-      name = aws_s3_bucket.gold.id
-      arn  = aws_s3_bucket.gold.arn
+      name = module.s3_gold.bucket_id
+      arn  = module.s3_gold.bucket_arn
       tier = "analytics_ready"
     }
   }

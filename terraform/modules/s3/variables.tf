@@ -3,11 +3,6 @@ variable "bucket_name" {
   type        = string
 }
 
-variable "provider_alias" {
-  description = "Alias del provider AWS a usar"
-  type        = any
-}
-
 variable "enable_versioning" {
   description = "Habilitar control de versiones"
   type        = bool
