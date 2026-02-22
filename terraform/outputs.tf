@@ -31,6 +31,16 @@ output "gold_bucket_arn" {
 output "s3_buckets" {
   description = "Resumen de todos los buckets creados"
   value = {
+    landing = {
+      name = module.s3_landing.bucket_id
+      arn  = module.s3_landing.bucket_arn
+      tier = "landing_area"
+    }
+    landing_failed = {
+      name = module.s3_landing_failed.bucket_id
+      arn  = module.s3_landing_failed.bucket_arn
+      tier = "landing_failed_area"
+    }
     bronze = {
       name = module.s3_bronze.bucket_id
       arn  = module.s3_bronze.bucket_arn

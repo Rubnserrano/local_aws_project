@@ -48,6 +48,18 @@ variable "gold_bucket_name" {
   default     = "gold-bucket"
 }
 
+variable "landing_bucket_name" {
+  description = "Nombre del bucket de landing"
+  type        = string
+  default     = "landing-bucket"
+}
+
+variable "landing_failed_bucket_name" {
+  description = "Nombre del bucket de landing para datos fallidos"
+  type        = string
+  default     = "landing-failed-bucket"
+}
+
 variable "tags" {
   description = "Tags comunes para todos los recursos"
   type        = map(string)
