@@ -20,3 +20,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "sqs_queue_arn" {
+  description = "ARN de la cola SQS para notificaciones S3"
+  type        = string
+  default     = ""
+}

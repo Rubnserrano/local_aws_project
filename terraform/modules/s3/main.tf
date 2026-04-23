@@ -20,3 +20,14 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     }
   }
 }
+
+resource "aws_s3_bucket_notification" "this" {
+  count = var.sqs_queue_arn != "" ? 1 : 0
+  bucket = aws_s3_bucket.this.id
+
+  queue {
+    id        = "s3-notification-to-sqs"
+    queue_arn = var.sqs_queue_arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+}

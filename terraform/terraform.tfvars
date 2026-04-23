@@ -2,7 +2,7 @@
 
 aws_region         = "eu-west-1"
 environment         = "dev"
-localstack_endpoint = "http://localstack:4566"
+localstack_endpoint = "http://localhost:4566"
 
 bronze_bucket_name = "bronze-bucket-dev"
 silver_bucket_name = "silver-bucket-dev"

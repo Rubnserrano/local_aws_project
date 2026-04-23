@@ -1,0 +1,10 @@
+{
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "provider": "openrouter",
+  "temperature": 0.2,
+  "permissions": {
+    "bash": "ask",
+    "edit": "allow",
+    "git": "ask"
+  }
+}

@@ -9,7 +9,6 @@ terraform {
 }
 
 provider "aws" {
-  alias                       = "localstack"
   region                      = var.aws_region
   access_key                  = var.aws_access_key
   secret_key                  = var.aws_secret_key
@@ -20,5 +19,7 @@ provider "aws" {
 
   endpoints {
     s3 = var.localstack_endpoint
+    sqs = var.localstack_endpoint
+    lambda = var.localstack_endpoint
   }
 }

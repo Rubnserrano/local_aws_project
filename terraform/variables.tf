@@ -21,7 +21,7 @@ variable "aws_secret_key" {
 variable "localstack_endpoint" {
   description = "LocalStack endpoint URL"
   type        = string
-  default     = "http://localstack:4566"
+  default     = "http://localhost:4566"
 }
 
 variable "environment" {
@@ -55,5 +55,6 @@ variable "tags" {
     Project     = "localstack-etl"
     Environment = "dev"
     ManagedBy   = "terraform"
+    CreatedBy  = "your-name"
   }
 }
